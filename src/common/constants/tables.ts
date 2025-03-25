@@ -1,1 +1,5 @@
-export enum TABLES {}
+export enum TABLES {
+  PROFLES = 'profiles',
+  PRODUCTS = 'products',
+  CATEGORIES = 'categories',
+}
