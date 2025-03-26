@@ -8,6 +8,9 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
+import { createLogs } from 'src/helpers/logger';
+import { TABLES } from 'src/common/constants/tables';
+import { METHODS } from 'src/common/constants/https';
 
 @Injectable()
 export class ProductsService {
@@ -102,6 +105,15 @@ export class ProductsService {
     delete updateProduct.profile;
     delete updateProduct.category;
 
+    createLogs(
+      {
+        id: updateProduct.id,
+        profile_id: user?.id,
+      },
+      TABLES.PRODUCTS,
+      METHODS.PATCH,
+    );
+
     return { data: updateProduct };
   }
 
@@ -120,6 +132,15 @@ export class ProductsService {
       throw new ForbiddenException(`You are not the owner of current product`);
 
     await this.productsRepository.remove(getProduct);
+
+    createLogs(
+      {
+        id: getProduct.id,
+        profile_id: user?.id,
+      },
+      TABLES.PRODUCTS,
+      METHODS.DELETE,
+    );
 
     return {
       data: {
