@@ -1,15 +1,17 @@
 import { Module } from '@nestjs/common';
-import { ProductsService } from './products.service';
-import { ProductsController } from './products.controller';
+import { OrdersService } from './orders.service';
+import { OrdersController } from './orders.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Product } from './entities/product.entity';
+import { Order } from './entities/order.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ENV_VARIABLES } from 'src/common/constants/env';
+import { ProductsModule } from '../products/products.module';
+import { Product } from '../products/entities/product.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Product]),
+    TypeOrmModule.forFeature([Order, Product]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -20,9 +22,9 @@ import { ENV_VARIABLES } from 'src/common/constants/env';
         },
       }),
     }),
+    ProductsModule,
   ],
-  controllers: [ProductsController],
-  providers: [ProductsService],
-  exports: [ProductsService],
+  controllers: [OrdersController],
+  providers: [OrdersService],
 })
-export class ProductsModule {}
+export class OrdersModule {}
