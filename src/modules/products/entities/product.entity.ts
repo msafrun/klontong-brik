@@ -1,10 +1,13 @@
 import { TABLES } from 'src/common/constants/tables';
 import { Category } from 'src/modules/categories/entities/category.entity';
+import { Profile } from 'src/modules/profiles/entities/profile.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -42,4 +45,7 @@ export class Product {
 
   @ManyToOne(() => Category, (category) => category.id)
   category: Category;
+
+  @ManyToOne(() => Profile, (profile) => profile.id)
+  profile: Profile;
 }

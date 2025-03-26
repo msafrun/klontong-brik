@@ -1,8 +1,10 @@
 import { TABLES } from 'src/common/constants/tables';
+import { Product } from 'src/modules/products/entities/product.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -25,4 +27,7 @@ export class Profile {
 
   @Column({ type: 'timestamp with time zone', nullable: true, default: null })
   updated_at: Date;
+
+  @OneToMany(() => Product, (product) => product.id)
+  products: Product[];
 }

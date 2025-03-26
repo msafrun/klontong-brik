@@ -1,6 +1,14 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { ProfilesService } from './profiles.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
+import { AuthGuard } from 'src/guards/auth';
 
 @Controller('profiles')
 export class ProfilesController {
@@ -14,5 +22,11 @@ export class ProfilesController {
   @Post('login')
   login(@Body() createProfileDto: CreateProfileDto) {
     return this.profilesService.login(createProfileDto);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('my')
+  findOne(@Request() request: any) {
+    return this.profilesService.findOne(request);
   }
 }
